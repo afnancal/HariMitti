@@ -36,6 +36,12 @@ public class User {
 	@Column(name = "password", nullable = false)
 	private String password;
 
+	@Column(name = "gcm_reg", nullable = false)
+	private String gcm_reg;
+
+	@Column(name = "img_url", nullable = false)
+	private String img_url;
+
 	@Column(name = "action_on", nullable = true)
 	private Date action_on;
 
@@ -91,6 +97,22 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getGcm_reg() {
+		return gcm_reg;
+	}
+
+	public void setGcm_reg(String gcm_reg) {
+		this.gcm_reg = gcm_reg;
+	}
+
+	public String getImg_url() {
+		return img_url;
+	}
+
+	public void setImg_url(String img_url) {
+		this.img_url = img_url;
 	}
 
 	public String getAction_on() {
