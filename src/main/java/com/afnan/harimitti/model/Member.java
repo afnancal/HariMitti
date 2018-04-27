@@ -10,16 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user_details")
-public class User {
-
-	/*
-	 * @GeneratedValue(strategy = GenerationType.IDENTITY) private int id;
-	 */
+@Table(name = "membership_details")
+public class Member {
 
 	@Id
-	@Column(name = "user_id", unique = true, nullable = false)
-	private String user_id;
+	@Column(name = "membership_id", unique = true, nullable = false)
+	private String member_id;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -45,18 +41,12 @@ public class User {
 	@Column(name = "action_on", nullable = false)
 	private Date action_on;
 
-	/*
-	 * public int getId() { return id; }
-	 * 
-	 * public void setId(int id) { this.id = id; }
-	 */
-
-	public String getUser_id() {
-		return user_id;
+	public String getMember_id() {
+		return member_id;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
 
 	public String getName() {

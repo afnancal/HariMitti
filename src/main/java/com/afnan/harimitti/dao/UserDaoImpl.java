@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
@@ -51,19 +52,24 @@ public class UserDaoImpl implements UserDao {
 	public Login login(String contact_no, String password) {
 
 		Login login = new Login();
-		@SuppressWarnings("deprecation")
-		Criteria criteria = getSession().createCriteria(User.class);
-		criteria.add(Restrictions.eq("contact_no", contact_no));
-		criteria.add(Restrictions.eq("password", password));
-		criteria.setProjection(Projections.rowCount());
 
-		long countL = (Long) criteria.uniqueResult();
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<User> root = criteriaQuery.from(User.class);
+
+		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(User.class)));
+		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(root.get("contact_no"), contact_no)),
+				criteriaBuilder.or(criteriaBuilder.like(root.get("password"), password)));
+		long countL = getSession().createQuery(criteriaQuery).getSingleResult();
+
 		if (countL != 0) {
-			@SuppressWarnings("deprecation")
-			Criteria criteria1 = getSession().createCriteria(User.class);
-			criteria1.add(Restrictions.eq("contact_no", contact_no));
-			criteria1.add(Restrictions.eq("password", password));
-			User user = (User) criteria1.uniqueResult();
+			CriteriaBuilder criteriaBuilder1 = getSession().getCriteriaBuilder();
+			CriteriaQuery<User> criteriaQuery1 = criteriaBuilder1.createQuery(User.class);
+			Root<User> root1 = criteriaQuery1.from(User.class);
+
+			criteriaQuery1.where(criteriaBuilder1.or(criteriaBuilder1.like(root1.get("contact_no"), contact_no)),
+					criteriaBuilder1.or(criteriaBuilder1.like(root1.get("password"), password)));
+			User user = getSession().createQuery(criteriaQuery1).getSingleResult();
 
 			login.setStatus(true);
 			login.setMsg("Login successful.");
@@ -104,6 +110,8 @@ public class UserDaoImpl implements UserDao {
 			userObj.setContact_no(user.getContact_no());
 			userObj.setEmail(user.getEmail());
 			userObj.setPassword(user.getPassword());
+			userObj.setGcm_reg(user.getGcm_reg());
+			userObj.setImg_url(user.getImg_url());
 			userObj.setAction_on(new Date());
 
 			// getSession().save(userObj);
@@ -226,7 +234,7 @@ public class UserDaoImpl implements UserDao {
 	private String convertTimestamp() {
 
 		String newstring = "";
-		SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyHHmmssSSSSSSSSS");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmssSSSSSSSSS");
 		Date date = new Date();
 		newstring = "U" + formatter.format(date);
 
