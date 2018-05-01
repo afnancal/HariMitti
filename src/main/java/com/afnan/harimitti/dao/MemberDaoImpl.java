@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import com.afnan.harimitti.model.Login;
 import com.afnan.harimitti.model.Member;
 import com.afnan.harimitti.model.ReturnMsg;
+import com.afnan.harimitti.model.User;
 
 @Repository
 public class MemberDaoImpl implements MemberDao {
@@ -55,6 +56,7 @@ public class MemberDaoImpl implements MemberDao {
 		return getSession().createQuery(criteriaQuery).getResultList();
 	}
 
+	@Override
 	public Login loginMember(Member member) {
 
 		Login login = new Login();
@@ -88,19 +90,69 @@ public class MemberDaoImpl implements MemberDao {
 			Member memberGet = getSession().createQuery(criteriaQuery1).getSingleResult();
 
 			login.setStatus(true);
-			login.setMsg("Login successful.");
+			login.setMsg("Login successful as a Membership.");
 			login.setUser_id(memberGet.getMember_id());
 			login.setName(memberGet.getName());
 			login.setImg_url(memberGet.getImg_url());
+			login.setUsertype("Membership");
+
+		} else {
+			/*login.setStatus(false);
+			login.setMsg("Invalid username password.");*/
+			login = userLogin(member.getContact_no(), member.getPassword(), member.getGcm_reg());
+
+		}
+
+		return login;
+
+	}
+	
+	// For User Login
+	private Login userLogin(String contact_no, String password, String gcm_reg) {
+		Login login = new Login();
+
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<User> root = criteriaQuery.from(User.class);
+
+		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(User.class)));
+		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(root.get("contact_no"), contact_no)),
+				criteriaBuilder.or(criteriaBuilder.like(root.get("password"), password)));
+		long countL = getSession().createQuery(criteriaQuery).getSingleResult();
+		
+		if (countL != 0) {
+			// For inserting GCM_reg value into table
+			CriteriaBuilder builder = getSession().getCriteriaBuilder();
+			CriteriaUpdate<User> criteriaUpdate = builder.createCriteriaUpdate(User.class);
+			Root<User> rootUpdate = criteriaUpdate.from(User.class);
+			criteriaUpdate.set(rootUpdate.get("gcm_reg"), gcm_reg);
+			criteriaUpdate.where(builder.equal(rootUpdate.get("contact_no"), contact_no));
+			getSession().createQuery(criteriaUpdate).executeUpdate();
+
+			// For getting Login member details
+			CriteriaBuilder criteriaBuilder1 = getSession().getCriteriaBuilder();
+			CriteriaQuery<User> criteriaQuery1 = criteriaBuilder1.createQuery(User.class);
+			Root<User> root1 = criteriaQuery1.from(User.class);
+
+			criteriaQuery1.where(
+					criteriaBuilder1.or(criteriaBuilder1.like(root1.get("contact_no"), contact_no)),
+					criteriaBuilder1.or(criteriaBuilder1.like(root1.get("password"), password)));
+			User userGet = getSession().createQuery(criteriaQuery1).getSingleResult();
+
+			login.setStatus(true);
+			login.setMsg("Login successful as a User.");
+			login.setUser_id(userGet.getUser_id());
+			login.setName(userGet.getName());
+			login.setImg_url(userGet.getImg_url());
+			login.setUsertype("User");
 
 		} else {
 			login.setStatus(false);
 			login.setMsg("Invalid username password.");
 
 		}
-
+		
 		return login;
-
 	}
 
 	@Override
