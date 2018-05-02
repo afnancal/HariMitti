@@ -35,6 +35,12 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public List<Member> findMemberById(String member_id) {
+		// TODO Auto-generated method stub
+		return memberDao.findMemberById(member_id);
+	}
+
+	@Override
 	public Login loginMember(Member member) {
 		// TODO Auto-generated method stub
 		return memberDao.loginMember(member);

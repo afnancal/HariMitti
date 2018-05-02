@@ -11,6 +11,8 @@ public interface MemberDao {
 	public List<Member> getListMember();
 
 	public List<Member> findMemberByName(String name);
+	
+	public List<Member> findMemberById(String member_id);
 
 	public Login loginMember(Member member);
 

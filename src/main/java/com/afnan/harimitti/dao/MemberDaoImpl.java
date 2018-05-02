@@ -57,6 +57,22 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
+	public List<Member> findMemberById(String member_id) {
+		// TODO Auto-generated method stub
+
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Member> criteriaQuery = criteriaBuilder.createQuery(Member.class);
+		EntityType<Member> type = getSession().getMetamodel().entity(Member.class);
+		Root<Member> root = criteriaQuery.from(Member.class);
+
+		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(
+				criteriaBuilder.lower(root.get(type.getDeclaredSingularAttribute("member_id", String.class))),
+				"%" + member_id.toLowerCase() + "%")));
+
+		return getSession().createQuery(criteriaQuery).getResultList();
+	}
+
+	@Override
 	public Login loginMember(Member member) {
 
 		Login login = new Login();
@@ -97,8 +113,9 @@ public class MemberDaoImpl implements MemberDao {
 			login.setUsertype("Membership");
 
 		} else {
-			/*login.setStatus(false);
-			login.setMsg("Invalid username password.");*/
+			/*
+			 * login.setStatus(false); login.setMsg("Invalid username password.");
+			 */
 			login = userLogin(member.getContact_no(), member.getPassword(), member.getGcm_reg());
 
 		}
@@ -106,7 +123,7 @@ public class MemberDaoImpl implements MemberDao {
 		return login;
 
 	}
-	
+
 	// For User Login
 	private Login userLogin(String contact_no, String password, String gcm_reg) {
 		Login login = new Login();
@@ -119,7 +136,7 @@ public class MemberDaoImpl implements MemberDao {
 		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(root.get("contact_no"), contact_no)),
 				criteriaBuilder.or(criteriaBuilder.like(root.get("password"), password)));
 		long countL = getSession().createQuery(criteriaQuery).getSingleResult();
-		
+
 		if (countL != 0) {
 			// For inserting GCM_reg value into table
 			CriteriaBuilder builder = getSession().getCriteriaBuilder();
@@ -134,8 +151,7 @@ public class MemberDaoImpl implements MemberDao {
 			CriteriaQuery<User> criteriaQuery1 = criteriaBuilder1.createQuery(User.class);
 			Root<User> root1 = criteriaQuery1.from(User.class);
 
-			criteriaQuery1.where(
-					criteriaBuilder1.or(criteriaBuilder1.like(root1.get("contact_no"), contact_no)),
+			criteriaQuery1.where(criteriaBuilder1.or(criteriaBuilder1.like(root1.get("contact_no"), contact_no)),
 					criteriaBuilder1.or(criteriaBuilder1.like(root1.get("password"), password)));
 			User userGet = getSession().createQuery(criteriaQuery1).getSingleResult();
 
@@ -151,7 +167,7 @@ public class MemberDaoImpl implements MemberDao {
 			login.setMsg("Invalid username password.");
 
 		}
-		
+
 		return login;
 	}
 

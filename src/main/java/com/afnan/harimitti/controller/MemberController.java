@@ -37,6 +37,14 @@ public class MemberController {
 		return members;
 	}
 
+	// -------------------Find Member by Id------------------------------
+	@RequestMapping(value = "/searchMemberById/{member_id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<Member> findMemberById(@PathVariable("member_id") String member_id) {
+		List<Member> members = memberService.findMemberById(member_id);
+
+		return members;
+	}
+
 	@RequestMapping(value = "/loginMember", method = RequestMethod.POST)
 	public @ResponseBody Login loginMember(@RequestBody Member member) {
 
