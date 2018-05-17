@@ -11,6 +11,8 @@ public interface MaintainerService {
 	public List<Maintainer> getListMaintainer();
 
 	public List<Maintainer> findMaintainerByName(String name);
+	
+	public List<Maintainer> findMaintainerById(String maintainer_id);
 
 	public Login loginMaintainer(Maintainer maintainer);
 

@@ -56,6 +56,22 @@ public class MaintainerDaoImpl implements MaintainerDao {
 		return getSession().createQuery(criteriaQuery).getResultList();
 	}
 
+	@Override
+	public List<Maintainer> findMaintainerById(String maintainer_id) {
+		// TODO Auto-generated method stub
+
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Maintainer> criteriaQuery = criteriaBuilder.createQuery(Maintainer.class);
+		EntityType<Maintainer> type = getSession().getMetamodel().entity(Maintainer.class);
+		Root<Maintainer> root = criteriaQuery.from(Maintainer.class);
+
+		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(
+				criteriaBuilder.lower(root.get(type.getDeclaredSingularAttribute("maintainer_id", String.class))),
+				"%" + maintainer_id.toLowerCase() + "%")));
+
+		return getSession().createQuery(criteriaQuery).getResultList();
+	}
+
 	public Login loginMaintainer(Maintainer maintainer) {
 
 		Login login = new Login();

@@ -37,6 +37,15 @@ public class MaintainerController {
 		return maintainers;
 	}
 
+	// -------------------Find Maintainer by Id------------------------------
+	@RequestMapping(value = "/searchMaintainerById/{maintainer_id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<Maintainer> findMaintainerById(@PathVariable("maintainer_id") String maintainer_id) {
+		List<Maintainer> maintainers = maintainerService.findMaintainerById(maintainer_id);
+
+		return maintainers;
+	}
+
+	// -------------------Login a Maintainer------------------------------------
 	@RequestMapping(value = "/loginMaintainer", method = RequestMethod.POST)
 	public @ResponseBody Login loginMaintainer(@RequestBody Maintainer maintainer) {
 

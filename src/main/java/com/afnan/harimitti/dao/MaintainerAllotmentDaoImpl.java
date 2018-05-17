@@ -34,9 +34,9 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 		Root<MaintainerAllotment> root = criteriaQuery.from(MaintainerAllotment.class);
 
 		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)));
-		List<MaintainerAllotment> maintainerLocation = getSession().createQuery(criteriaQuery).getResultList();
+		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).getResultList();
 
-		return maintainerLocation;
+		return maintainerAllotments;
 	}
 
 	@Override

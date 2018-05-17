@@ -27,11 +27,17 @@ public class MaintainerServiceImpl implements MaintainerService {
 		// TODO Auto-generated method stub
 		return maintainerDao.getListMaintainer();
 	}
-
+	
 	@Override
 	public List<Maintainer> findMaintainerByName(String name) {
 		// TODO Auto-generated method stub
 		return maintainerDao.findMaintainerByName(name);
+	}
+
+	@Override
+	public List<Maintainer> findMaintainerById(String maintainer_id) {
+		// TODO Auto-generated method stub
+		return maintainerDao.findMaintainerById(maintainer_id);
 	}
 
 	@Override

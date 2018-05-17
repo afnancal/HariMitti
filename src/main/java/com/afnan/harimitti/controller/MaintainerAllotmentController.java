@@ -23,18 +23,15 @@ public class MaintainerAllotmentController {
 	// -------------------Search by Maintainer Id------------------------------
 	@RequestMapping(value = "/searchMaintainerAllotmentMain/{maintainer_id}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody List<MaintainerAllotment> search(@PathVariable("maintainer_id") String maintainer_id) {
-		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService
-				.findMaintainerAllotmentByMainId(maintainer_id);
+		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService.findMaintainerAllotmentByMainId(maintainer_id);
 
 		return maintainerAllotments;
 	}
 
 	// -------------------Search by Membership Id------------------------------
 	@RequestMapping(value = "/searchMaintainerAllotmentMemb/{member_id}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public @ResponseBody List<MaintainerAllotment> findMaintainerAllotmentByMembId(
-			@PathVariable("member_id") String member_id) {
-		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService
-				.findMaintainerAllotmentByMembId(member_id);
+	public @ResponseBody List<MaintainerAllotment> findMaintainerAllotmentByMembId(@PathVariable("member_id") String member_id) {
+		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService.findMaintainerAllotmentByMembId(member_id);
 
 		return maintainerAllotments;
 	}
@@ -45,16 +42,16 @@ public class MaintainerAllotmentController {
 
 		return maintainerAllotmentService.createMaintainerAllotment(maintainerAllotment);
 	}
-	
-	// ------------------- Update a User -----------------------------------
-		@RequestMapping(value = "/updateMaintainerAllotment/{id}", method = RequestMethod.PUT)
-		public @ResponseBody ReturnMsg update(@PathVariable("id") int id, @RequestBody MaintainerAllotment maintainerAllotment) {
-			maintainerAllotment.setId(id);
 
-			return maintainerAllotmentService.updateMaintainerAllotment(maintainerAllotment);
-		}
+	// ------------------- Update a Maintainer Allotment-----------------------
+	@RequestMapping(value = "/updateMaintainerAllotment/{id}", method = RequestMethod.PUT)
+	public @ResponseBody ReturnMsg update(@PathVariable("id") int id, @RequestBody MaintainerAllotment maintainerAllotment) {
+		maintainerAllotment.setId(id);
 
-	// -------------------validate a Maintainer Allotment is exist----------------
+		return maintainerAllotmentService.updateMaintainerAllotment(maintainerAllotment);
+	}
+
+	// -------------------Validate a Maintainer Allotment is exist----------------
 	@RequestMapping(value = "/maintainerAllotmentExist/{maintainer_id}", method = RequestMethod.GET)
 	public @ResponseBody ReturnMsg maintainerAllotmentExist(@PathVariable("maintainer_id") String maintainer_id) {
 
