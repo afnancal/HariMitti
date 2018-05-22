@@ -18,6 +18,9 @@ public class Feedback {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column(name = "maintainers_allotment_id", nullable = false)
+	private int maintainers_allotment_id;
 
 	@Column(name = "membership_id", nullable = false)
 	private String membership_id;
@@ -64,6 +67,14 @@ public class Feedback {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public int getMaintainers_allotment_id() {
+		return maintainers_allotment_id;
+	}
+
+	public void setMaintainers_allotment_id(int maintainers_allotment_id) {
+		this.maintainers_allotment_id = maintainers_allotment_id;
 	}
 
 	public String getMembership_id() {

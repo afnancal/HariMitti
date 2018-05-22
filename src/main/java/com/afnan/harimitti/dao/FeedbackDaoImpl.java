@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.afnan.harimitti.model.Feedback;
+import com.afnan.harimitti.model.MaintainerAllotment;
 import com.afnan.harimitti.model.ReturnMsg;
 
 @Repository
@@ -58,6 +59,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
 		ReturnMsg returnMsg = new ReturnMsg();
 
 		Feedback feedbackObj = new Feedback();
+		feedbackObj.setMaintainers_allotment_id(feedback.getMaintainers_allotment_id());
 		feedbackObj.setMaintainer_id(feedback.getMaintainer_id());
 		feedbackObj.setMembership_id(feedback.getMembership_id());
 		feedbackObj.setPlant_img1(feedback.getPlant_img1());
@@ -74,6 +76,16 @@ public class FeedbackDaoImpl implements FeedbackDao {
 
 		try {
 			int count = (int) getSession().save(feedbackObj);
+
+			// -----For Updating Maintainer Allotment Table----------
+			CriteriaBuilder builder = getSession().getCriteriaBuilder();
+			CriteriaUpdate<MaintainerAllotment> criteria = builder.createCriteriaUpdate(MaintainerAllotment.class);
+			Root<MaintainerAllotment> root = criteria.from(MaintainerAllotment.class);
+			criteria.set(root.get("status"), feedback.getStatus());
+			criteria.set(root.get("action_on"), new Date());
+			criteria.where(builder.equal(root.get("id"), feedback.getMaintainers_allotment_id()));
+			getSession().createQuery(criteria).executeUpdate();
+
 			if (count != 0) {
 				returnMsg.setStatus(true);
 				returnMsg.setMsg("Successfully submitted.");
