@@ -61,6 +61,7 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 		maintainerAllotmentObj.setMaintainer_id(maintainerAllotment.getMaintainer_id());
 		maintainerAllotmentObj.setMembership_id(maintainerAllotment.getMembership_id());
 		maintainerAllotmentObj.setStatus(maintainerAllotment.getStatus());
+		maintainerAllotmentObj.setSchedule(maintainerAllotment.getSchedule());
 		maintainerAllotmentObj.setAction_on(new Date());
 
 		try {
@@ -95,6 +96,7 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 			CriteriaUpdate<MaintainerAllotment> criteria = builder.createCriteriaUpdate(MaintainerAllotment.class);
 			Root<MaintainerAllotment> root = criteria.from(MaintainerAllotment.class);
 			criteria.set(root.get("status"), maintainerAllotment.getStatus());
+			criteria.set(root.get("schedule"), maintainerAllotment.getSchedule());
 			criteria.set(root.get("action_on"), new Date());
 			criteria.where(builder.equal(root.get("id"), maintainerAllotment.getId()));
 			getSession().createQuery(criteria).executeUpdate();
@@ -138,5 +140,16 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 
 		return returnMsg;
 	}
+
+	/*private Date convertStringToDate(String date) {
+		Date scheduleDate = null;
+		try {
+			scheduleDate = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss", Locale.ENGLISH).parse(date);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		return scheduleDate;
+	}*/
 
 }

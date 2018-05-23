@@ -72,6 +72,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
 		feedbackObj.setStatus(feedback.getStatus());
 		feedbackObj.setPayment_method(feedback.getPayment_method());
 		feedbackObj.setChk_img_url(feedback.getChk_img_url());
+		feedbackObj.setAmount(feedback.getAmount());
 		feedbackObj.setAction_on(new Date());
 
 		try {
@@ -125,6 +126,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
 			criteria.set(root.get("status"), feedback.getStatus());
 			criteria.set(root.get("payment_method"), feedback.getPayment_method());
 			criteria.set(root.get("chk_img_url"), feedback.getChk_img_url());
+			criteria.set(root.get("amount"), feedback.getAmount());
 			criteria.set(root.get("action_on"), new Date());
 			criteria.where(builder.equal(root.get("id"), feedback.getId()));
 			getSession().createQuery(criteria).executeUpdate();

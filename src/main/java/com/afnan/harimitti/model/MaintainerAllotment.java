@@ -27,6 +27,9 @@ public class MaintainerAllotment {
 
 	@Column(name = "status", nullable = true)
 	private int status;
+	
+	@Column(name = "schedule", nullable = false)
+	private String schedule;
 
 	@Column(name = "action_on", nullable = false)
 	private Date action_on;
@@ -61,6 +64,14 @@ public class MaintainerAllotment {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	
+	public String getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(String schedule) {
+		this.schedule = schedule;
 	}
 
 	public String getAction_on() {

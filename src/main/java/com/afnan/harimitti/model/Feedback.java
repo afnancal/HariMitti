@@ -18,7 +18,7 @@ public class Feedback {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	@Column(name = "maintainers_allotment_id", nullable = false)
 	private int maintainers_allotment_id;
 
@@ -58,6 +58,9 @@ public class Feedback {
 	@Column(name = "chk_img_url", nullable = false)
 	private String chk_img_url;
 
+	@Column(name = "amount", nullable = false)
+	private String amount;
+
 	@Column(name = "action_on", nullable = false)
 	private Date action_on;
 
@@ -68,7 +71,7 @@ public class Feedback {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public int getMaintainers_allotment_id() {
 		return maintainers_allotment_id;
 	}
@@ -171,6 +174,14 @@ public class Feedback {
 
 	public void setChk_img_url(String chk_img_url) {
 		this.chk_img_url = chk_img_url;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
 	}
 
 	public String getAction_on() {
