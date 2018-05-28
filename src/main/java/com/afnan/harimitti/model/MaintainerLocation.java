@@ -23,10 +23,10 @@ public class MaintainerLocation {
 	private String maintainer_id;
 
 	@Column(name = "latitude", nullable = false)
-	private String latitude;
+	private Double latitude;
 
 	@Column(name = "longitude", nullable = true)
-	private String longitude;
+	private Double longitude;
 
 	@Column(name = "action_on", nullable = false)
 	private Date action_on;
@@ -47,19 +47,19 @@ public class MaintainerLocation {
 		this.maintainer_id = maintainer_id;
 	}
 
-	public String getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 
-	public String getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 

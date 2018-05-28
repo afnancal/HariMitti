@@ -50,8 +50,8 @@ public class MaintainerLocationDaoImpl implements MaintainerLocationDao {
 		maintainerLocationObj.setAction_on(new Date());
 
 		try {
-			String count = (String) getSession().save(maintainerLocationObj);
-			if (!count.equals(null)) {
+			int count = (int) getSession().save(maintainerLocationObj);
+			if (count != 0) {
 				returnMsg.setStatus(true);
 				returnMsg.setMsg("Successfully created.");
 
