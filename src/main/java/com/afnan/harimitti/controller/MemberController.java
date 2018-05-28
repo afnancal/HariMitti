@@ -45,6 +45,7 @@ public class MemberController {
 		return members;
 	}
 
+	// -------------------Login a Member------------------------------------
 	@RequestMapping(value = "/loginMember", method = RequestMethod.POST)
 	public @ResponseBody Login loginMember(@RequestBody Member member) {
 

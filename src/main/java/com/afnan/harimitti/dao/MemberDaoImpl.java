@@ -1,6 +1,5 @@
 package com.afnan.harimitti.dao;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -192,7 +191,7 @@ public class MemberDaoImpl implements MemberDao {
 		} else {
 			// System.out.println("absent");
 			Member memberObj = new Member();
-			memberObj.setMember_id(createMembershipId());
+			memberObj.setMember_id(member.getMember_id());
 			memberObj.setName(member.getName());
 			memberObj.setAddress(member.getAddress());
 			memberObj.setContact_no(member.getContact_no());
@@ -322,17 +321,6 @@ public class MemberDaoImpl implements MemberDao {
 		returnMsg.setMsg("Deleted successfully.");
 
 		return returnMsg;
-	}
-
-	// -------------------For creating Membership Id------------------------------
-	private String createMembershipId() {
-
-		String membershipId = "";
-		SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmssSSSSSSSSS");
-		Date date = new Date();
-		membershipId = "Memb" + formatter.format(date);
-
-		return membershipId;
 	}
 
 }

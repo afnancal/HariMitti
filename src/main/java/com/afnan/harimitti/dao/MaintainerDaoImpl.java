@@ -15,10 +15,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.afnan.harimitti.model.Admin;
 import com.afnan.harimitti.model.Login;
 import com.afnan.harimitti.model.Maintainer;
 import com.afnan.harimitti.model.ReturnMsg;
-import com.afnan.harimitti.model.User;
 
 @Repository
 public class MaintainerDaoImpl implements MaintainerDao {
@@ -124,16 +124,15 @@ public class MaintainerDaoImpl implements MaintainerDao {
 
 	}
 
-	// For AdminLogin
+	// For Admin Login
 	private Login adminLogin(String contact_no, String password, String gcm_reg) {
 		Login login = new Login();
 
-		// ------------------ For Temporary ------------------------------------
 		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-		Root<User> root = criteriaQuery.from(User.class);
+		Root<Admin> root = criteriaQuery.from(Admin.class);
 
-		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(User.class)));
+		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(Admin.class)));
 		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(root.get("contact_no"), contact_no)),
 				criteriaBuilder.or(criteriaBuilder.like(root.get("password"), password)));
 		long countL = getSession().createQuery(criteriaQuery).getSingleResult();
@@ -141,26 +140,26 @@ public class MaintainerDaoImpl implements MaintainerDao {
 		if (countL != 0) {
 			// For inserting GCM_reg value into table
 			CriteriaBuilder builder = getSession().getCriteriaBuilder();
-			CriteriaUpdate<User> criteriaUpdate = builder.createCriteriaUpdate(User.class);
-			Root<User> rootUpdate = criteriaUpdate.from(User.class);
+			CriteriaUpdate<Admin> criteriaUpdate = builder.createCriteriaUpdate(Admin.class);
+			Root<Admin> rootUpdate = criteriaUpdate.from(Admin.class);
 			criteriaUpdate.set(rootUpdate.get("gcm_reg"), gcm_reg);
 			criteriaUpdate.where(builder.equal(rootUpdate.get("contact_no"), contact_no));
 			getSession().createQuery(criteriaUpdate).executeUpdate();
 
 			// For getting Login member details
 			CriteriaBuilder criteriaBuilder1 = getSession().getCriteriaBuilder();
-			CriteriaQuery<User> criteriaQuery1 = criteriaBuilder1.createQuery(User.class);
-			Root<User> root1 = criteriaQuery1.from(User.class);
+			CriteriaQuery<Admin> criteriaQuery1 = criteriaBuilder1.createQuery(Admin.class);
+			Root<Admin> root1 = criteriaQuery1.from(Admin.class);
 
 			criteriaQuery1.where(criteriaBuilder1.or(criteriaBuilder1.like(root1.get("contact_no"), contact_no)),
 					criteriaBuilder1.or(criteriaBuilder1.like(root1.get("password"), password)));
-			User userGet = getSession().createQuery(criteriaQuery1).getSingleResult();
+			Admin adminGet = getSession().createQuery(criteriaQuery1).getSingleResult();
 
 			login.setStatus(true);
 			login.setMsg("Login successful as an Admin.");
-			login.setUser_id(userGet.getUser_id());
-			login.setName(userGet.getName());
-			login.setImg_url(userGet.getImg_url());
+			login.setUser_id(adminGet.getAdmin_id());
+			login.setName(adminGet.getName());
+			login.setImg_url(adminGet.getImg_url());
 			login.setUsertype("Admin");
 
 		} else {
