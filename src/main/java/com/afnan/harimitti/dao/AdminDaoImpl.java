@@ -13,6 +13,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.afnan.harimitti.helper.IndiaDateTime;
 import com.afnan.harimitti.model.Admin;
 import com.afnan.harimitti.model.ReturnMsg;
 
@@ -65,7 +66,7 @@ public class AdminDaoImpl implements AdminDao {
 			adminObj.setPassword(admin.getPassword());
 			adminObj.setGcm_reg(admin.getGcm_reg());
 			adminObj.setImg_url(admin.getImg_url());
-			adminObj.setAction_on(new Date());
+			adminObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			try {
 				String count = (String) getSession().save(adminObj);
@@ -105,7 +106,7 @@ public class AdminDaoImpl implements AdminDao {
 			adminObj.setPassword(admin.getPassword());
 			adminObj.setGcm_reg(admin.getGcm_reg());
 			adminObj.setImg_url(admin.getImg_url());
-			adminObj.setAction_on(new Date());
+			adminObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			getSession().update(adminObj);
 			returnMsg.setStatus(true);
@@ -140,9 +141,9 @@ public class AdminDaoImpl implements AdminDao {
 	private String createAdminId() {
 
 		String adminId = "";
-		SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmssSSSSSSSSS");
-		Date date = new Date();
-		adminId = "Admin" + formatter.format(date);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSSSSSSS");
+		Date date = IndiaDateTime.getUTCdatetimeAsDate();
+		adminId = "A" + formatter.format(date);
 
 		return adminId;
 	}

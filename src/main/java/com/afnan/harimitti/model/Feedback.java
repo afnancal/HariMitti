@@ -21,12 +21,12 @@ public class Feedback {
 
 	@Column(name = "maintainers_allotment_id", nullable = false)
 	private int maintainers_allotment_id;
+	
+	@Column(name = "maintainer_id", nullable = false)
+	private String maintainer_id;
 
 	@Column(name = "membership_id", nullable = false)
 	private String membership_id;
-
-	@Column(name = "maintainer_id", nullable = false)
-	private String maintainer_id;
 
 	@Column(name = "plant_img1", nullable = false)
 	private String plant_img1;
@@ -80,20 +80,20 @@ public class Feedback {
 		this.maintainers_allotment_id = maintainers_allotment_id;
 	}
 
-	public String getMembership_id() {
-		return membership_id;
-	}
-
-	public void setMembership_id(String membership_id) {
-		this.membership_id = membership_id;
-	}
-
 	public String getMaintainer_id() {
 		return maintainer_id;
 	}
 
 	public void setMaintainer_id(String maintainer_id) {
 		this.maintainer_id = maintainer_id;
+	}
+	
+	public String getMembership_id() {
+		return membership_id;
+	}
+
+	public void setMembership_id(String membership_id) {
+		this.membership_id = membership_id;
 	}
 
 	public String getPlant_img1() {

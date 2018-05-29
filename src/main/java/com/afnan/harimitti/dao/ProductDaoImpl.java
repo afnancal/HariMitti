@@ -14,6 +14,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.afnan.harimitti.helper.IndiaDateTime;
 import com.afnan.harimitti.model.Product;
 import com.afnan.harimitti.model.ReturnMsg;
 
@@ -78,7 +79,7 @@ public class ProductDaoImpl implements ProductDao {
 			productObj.setName(product.getName());
 			productObj.setDescription(product.getDescription());
 			productObj.setImg_url(product.getImg_url());
-			productObj.setAction_on(new Date());
+			productObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			try {
 				String count = (String) getSession().save(productObj);
@@ -114,7 +115,7 @@ public class ProductDaoImpl implements ProductDao {
 			productObj.setName(product.getName());
 			productObj.setDescription(product.getDescription());
 			productObj.setImg_url(product.getImg_url());
-			productObj.setAction_on(new Date());
+			productObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			getSession().update(productObj);
 			returnMsg.setStatus(true);
@@ -149,8 +150,8 @@ public class ProductDaoImpl implements ProductDao {
 	private String convertTimestamp() {
 
 		String newstring = "";
-		SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmssSSSSSSSSS");
-		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSSSSSSS");
+		Date date = IndiaDateTime.getUTCdatetimeAsDate();
 		newstring = "P" + formatter.format(date);
 
 		return newstring;

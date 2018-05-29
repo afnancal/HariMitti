@@ -18,6 +18,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.afnan.harimitti.helper.IndiaDateTime;
 import com.afnan.harimitti.model.Login;
 import com.afnan.harimitti.model.ReturnMsg;
 import com.afnan.harimitti.model.User;
@@ -112,7 +113,7 @@ public class UserDaoImpl implements UserDao {
 			userObj.setPassword(user.getPassword());
 			userObj.setGcm_reg(user.getGcm_reg());
 			userObj.setImg_url(user.getImg_url());
-			userObj.setAction_on(new Date());
+			userObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			// getSession().save(userObj);
 			try {
@@ -200,7 +201,7 @@ public class UserDaoImpl implements UserDao {
 			userObj.setContact_no(user.getContact_no());
 			userObj.setEmail(user.getEmail());
 			userObj.setPassword(user.getPassword());
-			userObj.setAction_on(new Date());
+			userObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			getSession().update(userObj);
 			returnMsg.setStatus(true);
@@ -234,8 +235,8 @@ public class UserDaoImpl implements UserDao {
 	private String convertTimestamp() {
 
 		String newstring = "";
-		SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmssSSSSSSSSS");
-		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSSSSSSS");
+		Date date = IndiaDateTime.getUTCdatetimeAsDate();
 		newstring = "U" + formatter.format(date);
 
 		return newstring;

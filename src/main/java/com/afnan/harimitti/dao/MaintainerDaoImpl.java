@@ -15,6 +15,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.afnan.harimitti.helper.IndiaDateTime;
 import com.afnan.harimitti.model.Admin;
 import com.afnan.harimitti.model.Login;
 import com.afnan.harimitti.model.Maintainer;
@@ -201,7 +202,7 @@ public class MaintainerDaoImpl implements MaintainerDao {
 			maintainerObj.setPassword(maintainer.getPassword());
 			maintainerObj.setGcm_reg(maintainer.getGcm_reg());
 			maintainerObj.setImg_url(maintainer.getImg_url());
-			maintainerObj.setAction_on(new Date());
+			maintainerObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			try {
 				String count = (String) getSession().save(maintainerObj);
@@ -294,7 +295,7 @@ public class MaintainerDaoImpl implements MaintainerDao {
 			maintainerObj.setPassword(maintainer.getPassword());
 			maintainerObj.setGcm_reg(maintainer.getGcm_reg());
 			maintainerObj.setImg_url(maintainer.getImg_url());
-			maintainerObj.setAction_on(new Date());
+			maintainerObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			getSession().update(maintainerObj);
 			returnMsg.setStatus(true);
@@ -329,8 +330,8 @@ public class MaintainerDaoImpl implements MaintainerDao {
 	private String createMaintainerId() {
 
 		String maintainerId = "";
-		SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmssSSSSSSSSS");
-		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSSSSSSS");
+		Date date = IndiaDateTime.getUTCdatetimeAsDate();
 		maintainerId = "Main" + formatter.format(date);
 
 		return maintainerId;

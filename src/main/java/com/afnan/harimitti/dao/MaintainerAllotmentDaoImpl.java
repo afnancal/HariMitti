@@ -1,6 +1,5 @@
 package com.afnan.harimitti.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.afnan.harimitti.helper.IndiaDateTime;
 import com.afnan.harimitti.model.MaintainerAllotment;
 import com.afnan.harimitti.model.ReturnMsg;
 
@@ -62,7 +62,7 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 		maintainerAllotmentObj.setMembership_id(maintainerAllotment.getMembership_id());
 		maintainerAllotmentObj.setStatus(maintainerAllotment.getStatus());
 		maintainerAllotmentObj.setSchedule(maintainerAllotment.getSchedule());
-		maintainerAllotmentObj.setAction_on(new Date());
+		maintainerAllotmentObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 		try {
 			int count = (int) getSession().save(maintainerAllotmentObj);
@@ -97,7 +97,7 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 			Root<MaintainerAllotment> root = criteria.from(MaintainerAllotment.class);
 			criteria.set(root.get("status"), maintainerAllotment.getStatus());
 			criteria.set(root.get("schedule"), maintainerAllotment.getSchedule());
-			criteria.set(root.get("action_on"), new Date());
+			criteria.set(root.get("action_on"), IndiaDateTime.getUTCdatetimeAsDate());
 			criteria.where(builder.equal(root.get("id"), maintainerAllotment.getId()));
 			getSession().createQuery(criteria).executeUpdate();
 
@@ -141,15 +141,11 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 		return returnMsg;
 	}
 
-	/*private Date convertStringToDate(String date) {
-		Date scheduleDate = null;
-		try {
-			scheduleDate = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss", Locale.ENGLISH).parse(date);
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		return scheduleDate;
-	}*/
+	/*
+	 * private Date convertStringToDate(String date) { Date scheduleDate = null; try
+	 * { scheduleDate = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss",
+	 * Locale.ENGLISH).parse(date); } catch (ParseException e1) { // TODO
+	 * Auto-generated catch block e1.printStackTrace(); } return scheduleDate; }
+	 */
 
 }

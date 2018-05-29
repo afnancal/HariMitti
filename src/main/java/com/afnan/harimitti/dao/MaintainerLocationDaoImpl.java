@@ -1,6 +1,5 @@
 package com.afnan.harimitti.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.afnan.harimitti.helper.IndiaDateTime;
 import com.afnan.harimitti.model.MaintainerLocation;
 import com.afnan.harimitti.model.ReturnMsg;
 
@@ -47,7 +47,7 @@ public class MaintainerLocationDaoImpl implements MaintainerLocationDao {
 		maintainerLocationObj.setMaintainer_id(maintainerLocation.getMaintainer_id());
 		maintainerLocationObj.setLatitude(maintainerLocation.getLatitude());
 		maintainerLocationObj.setLongitude(maintainerLocation.getLongitude());
-		maintainerLocationObj.setAction_on(new Date());
+		maintainerLocationObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 		try {
 			int count = (int) getSession().save(maintainerLocationObj);

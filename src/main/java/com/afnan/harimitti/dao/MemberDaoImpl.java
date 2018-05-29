@@ -1,6 +1,5 @@
 package com.afnan.harimitti.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,6 +13,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.afnan.harimitti.helper.IndiaDateTime;
 import com.afnan.harimitti.model.Login;
 import com.afnan.harimitti.model.Member;
 import com.afnan.harimitti.model.ReturnMsg;
@@ -199,7 +199,7 @@ public class MemberDaoImpl implements MemberDao {
 			memberObj.setPassword(member.getPassword());
 			memberObj.setGcm_reg(member.getGcm_reg());
 			memberObj.setImg_url(member.getImg_url());
-			memberObj.setAction_on(new Date());
+			memberObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			try {
 				String count = (String) getSession().save(memberObj);
@@ -292,7 +292,7 @@ public class MemberDaoImpl implements MemberDao {
 			memberObj.setPassword(member.getPassword());
 			memberObj.setGcm_reg(member.getGcm_reg());
 			memberObj.setImg_url(member.getImg_url());
-			memberObj.setAction_on(new Date());
+			memberObj.setAction_on(IndiaDateTime.getUTCdatetimeAsDate());
 
 			getSession().update(memberObj);
 			returnMsg.setStatus(true);
