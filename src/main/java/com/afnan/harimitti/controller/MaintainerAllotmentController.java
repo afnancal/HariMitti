@@ -19,6 +19,14 @@ public class MaintainerAllotmentController {
 
 	@Autowired
 	MaintainerAllotmentService maintainerAllotmentService;
+	
+	// -------------------Retrieve All maintainer Allotment------------------
+	@RequestMapping(value = "/maintainerAllotmentList", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<MaintainerAllotment> getListMaintainerAllotment() {
+		List<MaintainerAllotment> maintainerAllotmentList = maintainerAllotmentService.getListMaintainerAllotment();
+
+		return maintainerAllotmentList;
+	}
 
 	// -------------------Search by Maintainer Id------------------------------
 	@RequestMapping(value = "/searchMaintainerAllotmentMain/{maintainer_id}", method = RequestMethod.GET, headers = "Accept=application/json")

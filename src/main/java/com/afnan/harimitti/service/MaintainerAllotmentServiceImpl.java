@@ -13,12 +13,18 @@ import com.afnan.harimitti.model.ReturnMsg;
 @Service
 @Transactional
 public class MaintainerAllotmentServiceImpl implements MaintainerAllotmentService {
-	
+
 	MaintainerAllotmentDao maintainerAllotmentDao;
 
 	@Autowired
 	public void setMaintainerAllotmentDao(MaintainerAllotmentDao maintainerAllotmentDao) {
 		this.maintainerAllotmentDao = maintainerAllotmentDao;
+	}
+
+	@Override
+	public List<MaintainerAllotment> getListMaintainerAllotment() {
+		// TODO Auto-generated method stub
+		return maintainerAllotmentDao.getListMaintainerAllotment();
 	}
 
 	@Override

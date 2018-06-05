@@ -27,6 +27,17 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 	}
 
 	@Override
+	public List<MaintainerAllotment> getListMaintainerAllotment() {
+		// TODO Auto-generated method stub
+		// create Criteria
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<MaintainerAllotment> criteriaQuery = criteriaBuilder.createQuery(MaintainerAllotment.class);
+		criteriaQuery.from(MaintainerAllotment.class);
+
+		return getSession().createQuery(criteriaQuery).getResultList();
+	}
+
+	@Override
 	public List<MaintainerAllotment> findMaintainerAllotmentByMainId(String maintainer_id) {
 		// TODO Auto-generated method stub
 		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
