@@ -106,6 +106,8 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 			CriteriaBuilder builder = getSession().getCriteriaBuilder();
 			CriteriaUpdate<MaintainerAllotment> criteria = builder.createCriteriaUpdate(MaintainerAllotment.class);
 			Root<MaintainerAllotment> root = criteria.from(MaintainerAllotment.class);
+			criteria.set(root.get("maintainer_id"), maintainerAllotment.getMaintainer_id());
+			criteria.set(root.get("membership_id"), maintainerAllotment.getMembership_id());
 			criteria.set(root.get("status"), maintainerAllotment.getStatus());
 			criteria.set(root.get("schedule"), maintainerAllotment.getSchedule());
 			criteria.set(root.get("action_on"), IndiaDateTime.getUTCdatetimeAsDate());
