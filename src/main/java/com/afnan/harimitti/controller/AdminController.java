@@ -28,6 +28,14 @@ public class AdminController {
 		return admins;
 	}
 
+	// -------------------Find Admin by Id------------------------------
+	@RequestMapping(value = "/searchAdminById/{admin_id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<Admin> findAdminById(@PathVariable("admin_id") String admin_id) {
+		List<Admin> admins = adminService.findAdminById(admin_id);
+
+		return admins;
+	}
+
 	// ------------Login a Admin, but login from Maintainer login url---------
 
 	// -------------------Create a Admin------------------------------------

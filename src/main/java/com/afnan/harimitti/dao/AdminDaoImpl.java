@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.EntityType;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -33,6 +34,22 @@ public class AdminDaoImpl implements AdminDao {
 		// create Criteria
 		CriteriaQuery<Admin> criteriaQuery = getSession().getCriteriaBuilder().createQuery(Admin.class);
 		criteriaQuery.from(Admin.class);
+
+		return getSession().createQuery(criteriaQuery).getResultList();
+	}
+
+	@Override
+	public List<Admin> findAdminById(String admin_id) {
+		// TODO Auto-generated method stub
+
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Admin> criteriaQuery = criteriaBuilder.createQuery(Admin.class);
+		EntityType<Admin> type = getSession().getMetamodel().entity(Admin.class);
+		Root<Admin> root = criteriaQuery.from(Admin.class);
+
+		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(
+				criteriaBuilder.lower(root.get(type.getDeclaredSingularAttribute("admin_id", String.class))),
+				"%" + admin_id.toLowerCase() + "%")));
 
 		return getSession().createQuery(criteriaQuery).getResultList();
 	}

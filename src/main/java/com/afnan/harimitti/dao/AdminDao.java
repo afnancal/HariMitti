@@ -9,6 +9,8 @@ public interface AdminDao {
 
 	public List<Admin> getListAdmin();
 
+	public List<Admin> findAdminById(String admin_id);
+
 	// public Login loginAdmin(Admin admin);
 
 	public ReturnMsg createAdmin(Admin admin);
