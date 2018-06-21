@@ -20,6 +20,15 @@ public class FeedbackController {
 	@Autowired
 	FeedbackService feedbackService;
 
+	// -----------Search Feedback by Maintainer, Member Id & Date----------
+	@RequestMapping(value = "/searchFeedByMainMembIdDate/{maintainer_id}/{member_id}/{date}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<Feedback> searchFeedByMainMembIdDate(@PathVariable("maintainer_id") String maintainer_id,
+			@PathVariable("member_id") String member_id, @PathVariable("date") String date) {
+		List<Feedback> feedbacks = feedbackService.searchFeedByMainMembIdDate(maintainer_id, member_id, date);
+
+		return feedbacks;
+	}
+
 	// -------------------Search Feedback by Maintainer Id----------------
 	@RequestMapping(value = "/searchFeedbackByMaintainerId/{maintainer_id}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody List<Feedback> searchFeedbackByMaintainerId(

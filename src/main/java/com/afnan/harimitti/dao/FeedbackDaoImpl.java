@@ -1,5 +1,6 @@
 package com.afnan.harimitti.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -25,6 +26,25 @@ public class FeedbackDaoImpl implements FeedbackDao {
 
 	protected Session getSession() {
 		return sessionFactory.getCurrentSession();
+	}
+
+	@Override
+	public List<Feedback> searchFeedByMainMembIdDate(String maintainer_id, String member_id, String date) {
+		// TODO Auto-generated method stub
+		Date startDate = IndiaDateTime.stringDateToDate(date + " 00:00:00");
+		Date endDate = IndiaDateTime.stringDateToDate(date + " 23:59:59");
+
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Feedback> criteriaQuery = criteriaBuilder.createQuery(Feedback.class);
+		Root<Feedback> root = criteriaQuery.from(Feedback.class);
+
+		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(root.get("maintainer_id"), maintainer_id)),
+				criteriaBuilder.or(criteriaBuilder.like(root.get("membership_id"), member_id)),
+				criteriaBuilder.or(criteriaBuilder.greaterThanOrEqualTo(root.get("action_on"), startDate)),
+				criteriaBuilder.or(criteriaBuilder.lessThanOrEqualTo(root.get("action_on"), endDate)));
+		List<Feedback> feedbacks = getSession().createQuery(criteriaQuery).getResultList();
+
+		return feedbacks;
 	}
 
 	@Override
