@@ -154,11 +154,4 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 		return returnMsg;
 	}
 
-	/*
-	 * private Date convertStringToDate(String date) { Date scheduleDate = null; try
-	 * { scheduleDate = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss",
-	 * Locale.ENGLISH).parse(date); } catch (ParseException e1) { // TODO
-	 * Auto-generated catch block e1.printStackTrace(); } return scheduleDate; }
-	 */
-
 }

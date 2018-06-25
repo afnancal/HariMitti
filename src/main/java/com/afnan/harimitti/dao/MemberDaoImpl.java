@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 
@@ -178,9 +179,18 @@ public class MemberDaoImpl implements MemberDao {
 		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 		Root<Member> root = criteriaQuery.from(Member.class);
+		Predicate cond = null;
 
 		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(Member.class)));
-		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.like(root.get("contact_no"), member.getContact_no())));
+		//If both columns should match the test values
+		cond = criteriaBuilder.and(criteriaBuilder.equal(root.get("member_id"), member.getMember_id()),
+				criteriaBuilder.equal(root.get("contact_no"), member.getContact_no()));
+
+		//If only one of the 2 columns should match the test values
+		cond = criteriaBuilder.or(criteriaBuilder.equal(root.get("member_id"), member.getMember_id()),
+				criteriaBuilder.equal(root.get("contact_no"), member.getContact_no()));
+
+		criteriaQuery.where(cond);
 		long countL = getSession().createQuery(criteriaQuery).getSingleResult();
 
 		if (countL != 0) {

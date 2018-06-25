@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 
@@ -62,9 +63,19 @@ public class AdminDaoImpl implements AdminDao {
 		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 		Root<Admin> root = criteriaQuery.from(Admin.class);
+		Predicate cond = null;
 
 		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(Admin.class)));
 		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.like(root.get("contact_no"), admin.getContact_no())));
+		// If both columns should match the test values
+		cond = criteriaBuilder.and(criteriaBuilder.equal(root.get("admin_id"), admin.getAdmin_id()),
+				criteriaBuilder.equal(root.get("contact_no"), admin.getContact_no()));
+
+		// If only one of the 2 columns should match the test values
+		cond = criteriaBuilder.or(criteriaBuilder.equal(root.get("admin_id"), admin.getAdmin_id()),
+				criteriaBuilder.equal(root.get("contact_no"), admin.getContact_no()));
+
+		criteriaQuery.where(cond);
 		long countL = getSession().createQuery(criteriaQuery).getSingleResult();
 
 		if (countL != 0) {
@@ -75,7 +86,7 @@ public class AdminDaoImpl implements AdminDao {
 		} else {
 			// System.out.println("absent");
 			Admin adminObj = new Admin();
-			adminObj.setAdmin_id(createAdminId());
+			adminObj.setAdmin_id(admin.getAdmin_id());
 			adminObj.setName(admin.getName());
 			adminObj.setAddress(admin.getAddress());
 			adminObj.setContact_no(admin.getContact_no());
