@@ -38,9 +38,9 @@ public class MemberController {
 	}
 
 	// -------------------Find Member by Id------------------------------
-	@RequestMapping(value = "/searchMemberById/{member_id}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public @ResponseBody List<Member> findMemberById(@PathVariable("member_id") String member_id) {
-		List<Member> members = memberService.findMemberById(member_id);
+	@RequestMapping(value = "/searchMemberById/{membership_id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<Member> findMemberById(@PathVariable("membership_id") String membership_id) {
+		List<Member> members = memberService.findMemberById(membership_id);
 
 		return members;
 	}
@@ -74,18 +74,18 @@ public class MemberController {
 	}
 
 	// ------------------- Update a Member -----------------------------------
-	@RequestMapping(value = "/updateMember/{member_id}", method = RequestMethod.PUT)
-	public @ResponseBody ReturnMsg update(@PathVariable("member_id") String member_id, @RequestBody Member member) {
-		member.setMember_id(member_id);
+	@RequestMapping(value = "/updateMember/{membership_id}", method = RequestMethod.PUT)
+	public @ResponseBody ReturnMsg update(@PathVariable("membership_id") String membership_id, @RequestBody Member member) {
+		member.setMembership_id(membership_id);
 
 		return memberService.updateMember(member);
 	}
 
 	// ------------------- Delete a Member ---------------------------------
-	@RequestMapping(value = "/deleteMember/{member_id}", method = RequestMethod.DELETE)
-	public @ResponseBody ReturnMsg delete(@PathVariable("member_id") String member_id) {
+	@RequestMapping(value = "/deleteMember/{membership_id}", method = RequestMethod.DELETE)
+	public @ResponseBody ReturnMsg delete(@PathVariable("membership_id") String membership_id) {
 
-		return memberService.deleteMember(member_id);
+		return memberService.deleteMember(membership_id);
 	}
 
 }

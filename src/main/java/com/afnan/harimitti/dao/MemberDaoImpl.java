@@ -57,7 +57,7 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public List<Member> findMemberById(String member_id) {
+	public List<Member> findMemberById(String membership_id) {
 		// TODO Auto-generated method stub
 
 		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
@@ -66,8 +66,8 @@ public class MemberDaoImpl implements MemberDao {
 		Root<Member> root = criteriaQuery.from(Member.class);
 
 		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(
-				criteriaBuilder.lower(root.get(type.getDeclaredSingularAttribute("member_id", String.class))),
-				"%" + member_id.toLowerCase() + "%")));
+				criteriaBuilder.lower(root.get(type.getDeclaredSingularAttribute("membership_id", String.class))),
+				"%" + membership_id.toLowerCase() + "%")));
 
 		return getSession().createQuery(criteriaQuery).getResultList();
 	}
@@ -107,7 +107,7 @@ public class MemberDaoImpl implements MemberDao {
 
 			login.setStatus(true);
 			login.setMsg("Login successful as a Membership.");
-			login.setUser_id(memberGet.getMember_id());
+			login.setUser_id(memberGet.getMembership_id());
 			login.setName(memberGet.getName());
 			login.setImg_url(memberGet.getImg_url());
 			login.setUsertype("Membership");
@@ -182,12 +182,12 @@ public class MemberDaoImpl implements MemberDao {
 		Predicate cond = null;
 
 		criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(Member.class)));
-		//If both columns should match the test values
-		cond = criteriaBuilder.and(criteriaBuilder.equal(root.get("member_id"), member.getMember_id()),
+		// If both columns should match the test values
+		cond = criteriaBuilder.and(criteriaBuilder.equal(root.get("membership_id"), member.getMembership_id()),
 				criteriaBuilder.equal(root.get("contact_no"), member.getContact_no()));
 
-		//If only one of the 2 columns should match the test values
-		cond = criteriaBuilder.or(criteriaBuilder.equal(root.get("member_id"), member.getMember_id()),
+		// If only one of the 2 columns should match the test values
+		cond = criteriaBuilder.or(criteriaBuilder.equal(root.get("membership_id"), member.getMembership_id()),
 				criteriaBuilder.equal(root.get("contact_no"), member.getContact_no()));
 
 		criteriaQuery.where(cond);
@@ -201,7 +201,7 @@ public class MemberDaoImpl implements MemberDao {
 		} else {
 			// System.out.println("absent");
 			Member memberObj = new Member();
-			memberObj.setMember_id(member.getMember_id());
+			memberObj.setMembership_id(member.getMembership_id());
 			memberObj.setName(member.getName());
 			memberObj.setAddress(member.getAddress());
 			memberObj.setContact_no(member.getContact_no());
@@ -294,7 +294,7 @@ public class MemberDaoImpl implements MemberDao {
 
 		try {
 			Member memberObj = new Member();
-			memberObj.setMember_id(member.getMember_id());
+			memberObj.setMembership_id(member.getMembership_id());
 			memberObj.setName(member.getName());
 			memberObj.setAddress(member.getAddress());
 			memberObj.setContact_no(member.getContact_no());
@@ -320,11 +320,11 @@ public class MemberDaoImpl implements MemberDao {
 	}
 
 	@Override
-	public ReturnMsg deleteMember(String member_id) {
+	public ReturnMsg deleteMember(String membership_id) {
 		// TODO Auto-generated method stub
 		ReturnMsg returnMsg = new ReturnMsg();
 
-		Member member = (Member) getSession().get(Member.class, member_id);
+		Member member = (Member) getSession().get(Member.class, membership_id);
 		getSession().delete(member);
 
 		returnMsg.setStatus(true);

@@ -15,7 +15,7 @@ public class Member {
 
 	@Id
 	@Column(name = "membership_id", unique = true, nullable = false)
-	private String member_id;
+	private String membership_id;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -41,12 +41,12 @@ public class Member {
 	@Column(name = "action_on", nullable = false)
 	private Date action_on;
 
-	public String getMember_id() {
-		return member_id;
+	public String getMembership_id() {
+		return membership_id;
 	}
 
-	public void setMember_id(String member_id) {
-		this.member_id = member_id;
+	public void setMembership_id(String membership_id) {
+		this.membership_id = membership_id;
 	}
 
 	public String getName() {

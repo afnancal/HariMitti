@@ -12,7 +12,7 @@ public interface MemberService {
 
 	public List<Member> findMemberByName(String name);
 
-	public List<Member> findMemberById(String member_id);
+	public List<Member> findMemberById(String membership_id);
 
 	public Login loginMember(Member member);
 
@@ -24,6 +24,6 @@ public interface MemberService {
 
 	public ReturnMsg updateMember(Member member);
 
-	public ReturnMsg deleteMember(String member_id);
+	public ReturnMsg deleteMember(String membership_id);
 
 }
