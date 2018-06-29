@@ -11,6 +11,12 @@ public interface MaintainerAllotmentDao {
 
 	public List<MaintainerAllotment> findMaintainerAllotmentByMainId(String maintainer_id);
 
+	public List<MaintainerAllotment> findTodaysMainAllotByMainId(String maintainer_id, String date);
+
+	public List<MaintainerAllotment> findPreviousMainAllotByMainId(String maintainer_id, String date);
+
+	public List<MaintainerAllotment> findComingMainAllotByMainId(String maintainer_id, String date);
+
 	public List<MaintainerAllotment> findMaintainerAllotmentByMembId(String member_id);
 
 	public ReturnMsg createMaintainerAllotment(MaintainerAllotment maintainerAllotment);

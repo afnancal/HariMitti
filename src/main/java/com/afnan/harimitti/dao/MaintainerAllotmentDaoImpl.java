@@ -1,5 +1,6 @@
 package com.afnan.harimitti.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -46,6 +47,76 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 
 		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)));
 		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).getResultList();
+
+		return maintainerAllotments;
+	}
+
+	@Override
+	public List<MaintainerAllotment> findTodaysMainAllotByMainId(String maintainer_id, String date) {
+		// TODO Auto-generated method stub
+		String startDate = (date + " 00:00:00");
+		String endDate = (date + " 23:59:59");
+
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<MaintainerAllotment> criteriaQuery = criteriaBuilder.createQuery(MaintainerAllotment.class);
+		Root<MaintainerAllotment> root = criteriaQuery.from(MaintainerAllotment.class);
+
+		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)),
+				criteriaBuilder.or(criteriaBuilder.greaterThanOrEqualTo(root.get("schedule"), startDate)),
+				criteriaBuilder.or(criteriaBuilder.lessThanOrEqualTo(root.get("schedule"), endDate)));
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("schedule")));
+
+		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).getResultList();
+
+		return maintainerAllotments;
+	}
+
+	@Override
+	public List<MaintainerAllotment> findPreviousMainAllotByMainId(String maintainer_id, String date) {
+		// TODO Auto-generated method stub
+		Date d = IndiaDateTime.stringDateToDate(date + " 00:00:00"); 		// Initialize your date to any date
+		int n = 7;
+		Date dateBefore = new Date(d.getTime() - n * 24 * 3600 * 1000); 	// Subtract n days
+		String startDate = IndiaDateTime.DateToStringDate(dateBefore);
+		String endDate = date + " 00:00:00";
+
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<MaintainerAllotment> criteriaQuery = criteriaBuilder.createQuery(MaintainerAllotment.class);
+		Root<MaintainerAllotment> root = criteriaQuery.from(MaintainerAllotment.class);
+
+		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)),
+				criteriaBuilder.or(criteriaBuilder.greaterThanOrEqualTo(root.get("schedule"), startDate)),
+				criteriaBuilder.or(criteriaBuilder.lessThanOrEqualTo(root.get("schedule"), endDate)));
+		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("schedule")));
+
+		int limit = 10; 	// Set limit gives only 10 data
+		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).setMaxResults(limit)
+				.getResultList();
+
+		return maintainerAllotments;
+	}
+
+	@Override
+	public List<MaintainerAllotment> findComingMainAllotByMainId(String maintainer_id, String date) {
+		// TODO Auto-generated method stub
+		Date d = IndiaDateTime.stringDateToDate(date + " 23:59:59"); // Initialize your date to any date
+		int n = 7;
+		Date dateAfter = new Date(d.getTime() + n * 24 * 3600 * 1000); // Subtract n days
+		String endDate = IndiaDateTime.DateToStringDate(dateAfter);
+		String startDate = (date + " 23:59:59");
+
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<MaintainerAllotment> criteriaQuery = criteriaBuilder.createQuery(MaintainerAllotment.class);
+		Root<MaintainerAllotment> root = criteriaQuery.from(MaintainerAllotment.class);
+
+		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)),
+				criteriaBuilder.or(criteriaBuilder.greaterThanOrEqualTo(root.get("schedule"), startDate)),
+				criteriaBuilder.or(criteriaBuilder.lessThanOrEqualTo(root.get("schedule"), endDate)));
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("schedule")));
+
+		int limit = 10; 	// Set limit gives only 10 data
+		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).setMaxResults(limit)
+				.getResultList();
 
 		return maintainerAllotments;
 	}

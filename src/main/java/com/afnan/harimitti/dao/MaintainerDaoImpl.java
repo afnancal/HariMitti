@@ -1,7 +1,5 @@
 package com.afnan.harimitti.dao;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -335,17 +333,6 @@ public class MaintainerDaoImpl implements MaintainerDao {
 		returnMsg.setMsg("Deleted successfully.");
 
 		return returnMsg;
-	}
-
-	// -------------------For creating Maintainer Id------------------------------
-	private String createMaintainerId() {
-
-		String maintainerId = "";
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSSSSSSS");
-		Date date = IndiaDateTime.getUTCdatetimeAsDate();
-		maintainerId = "Main" + formatter.format(date);
-
-		return maintainerId;
 	}
 
 }

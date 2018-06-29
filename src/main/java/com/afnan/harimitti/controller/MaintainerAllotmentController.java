@@ -19,7 +19,7 @@ public class MaintainerAllotmentController {
 
 	@Autowired
 	MaintainerAllotmentService maintainerAllotmentService;
-	
+
 	// -------------------Retrieve All maintainer Allotment------------------
 	@RequestMapping(value = "/maintainerAllotmentList", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody List<MaintainerAllotment> getListMaintainerAllotment() {
@@ -28,18 +28,52 @@ public class MaintainerAllotmentController {
 		return maintainerAllotmentList;
 	}
 
-	// -------------------Search by Maintainer Id------------------------------
+	// -------------------Search Allotment by Maintainer Id-------------------
 	@RequestMapping(value = "/searchMaintainerAllotmentMain/{maintainer_id}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody List<MaintainerAllotment> search(@PathVariable("maintainer_id") String maintainer_id) {
-		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService.findMaintainerAllotmentByMainId(maintainer_id);
+		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService
+				.findMaintainerAllotmentByMainId(maintainer_id);
 
 		return maintainerAllotments;
 	}
 
-	// -------------------Search by Membership Id------------------------------
+	// -------------------Search Todays Allotment by Maintainer Id-------------
+	@RequestMapping(value = "/searchTodaysMaintainerAllotmentMain/{maintainer_id}/{date}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<MaintainerAllotment> searchTodays(@PathVariable("maintainer_id") String maintainer_id,
+			@PathVariable("date") String date) {
+		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService
+				.findTodaysMainAllotByMainId(maintainer_id, date);
+
+		return maintainerAllotments;
+	}
+
+	// -------------------Search Previous Allotment by Maintainer Id------------
+	@RequestMapping(value = "/searchPreviousMaintainerAllotmentMain/{maintainer_id}/{date}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<MaintainerAllotment> searchPrevious(@PathVariable("maintainer_id") String maintainer_id,
+			@PathVariable("date") String date) {
+		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService
+				.findPreviousMainAllotByMainId(maintainer_id, date);
+
+		return maintainerAllotments;
+	}
+
+	// -------------------Search Coming Allotment by Maintainer Id---------------
+	@RequestMapping(value = "/searchComingMaintainerAllotmentMain/{maintainer_id}/{date}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<MaintainerAllotment> searchComing(@PathVariable("maintainer_id") String maintainer_id,
+			@PathVariable("date") String date) {
+		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService
+				.findComingMainAllotByMainId(maintainer_id, date);
+
+		return maintainerAllotments;
+	}
+
+	// -------------------Search Allotment by Membership
+	// Id------------------------------
 	@RequestMapping(value = "/searchMaintainerAllotmentMemb/{member_id}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public @ResponseBody List<MaintainerAllotment> findMaintainerAllotmentByMembId(@PathVariable("member_id") String member_id) {
-		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService.findMaintainerAllotmentByMembId(member_id);
+	public @ResponseBody List<MaintainerAllotment> findMaintainerAllotmentByMembId(
+			@PathVariable("member_id") String member_id) {
+		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService
+				.findMaintainerAllotmentByMembId(member_id);
 
 		return maintainerAllotments;
 	}
@@ -53,7 +87,8 @@ public class MaintainerAllotmentController {
 
 	// ------------------- Update a Maintainer Allotment-----------------------
 	@RequestMapping(value = "/updateMaintainerAllotment/{id}", method = RequestMethod.PUT)
-	public @ResponseBody ReturnMsg update(@PathVariable("id") int id, @RequestBody MaintainerAllotment maintainerAllotment) {
+	public @ResponseBody ReturnMsg update(@PathVariable("id") int id,
+			@RequestBody MaintainerAllotment maintainerAllotment) {
 		maintainerAllotment.setId(id);
 
 		return maintainerAllotmentService.updateMaintainerAllotment(maintainerAllotment);

@@ -1,7 +1,5 @@
 package com.afnan.harimitti.dao;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -163,17 +161,6 @@ public class AdminDaoImpl implements AdminDao {
 		returnMsg.setMsg("Deleted successfully.");
 
 		return returnMsg;
-	}
-
-	// -------------------For creating Admin Id------------------------------
-	private String createAdminId() {
-
-		String adminId = "";
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSSSSSSS");
-		Date date = IndiaDateTime.getUTCdatetimeAsDate();
-		adminId = "A" + formatter.format(date);
-
-		return adminId;
 	}
 
 }

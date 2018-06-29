@@ -34,6 +34,24 @@ public class MaintainerAllotmentServiceImpl implements MaintainerAllotmentServic
 	}
 
 	@Override
+	public List<MaintainerAllotment> findTodaysMainAllotByMainId(String maintainer_id, String date) {
+		// TODO Auto-generated method stub
+		return maintainerAllotmentDao.findTodaysMainAllotByMainId(maintainer_id, date);
+	}
+
+	@Override
+	public List<MaintainerAllotment> findPreviousMainAllotByMainId(String maintainer_id, String date) {
+		// TODO Auto-generated method stub
+		return maintainerAllotmentDao.findPreviousMainAllotByMainId(maintainer_id, date);
+	}
+
+	@Override
+	public List<MaintainerAllotment> findComingMainAllotByMainId(String maintainer_id, String date) {
+		// TODO Auto-generated method stub
+		return maintainerAllotmentDao.findComingMainAllotByMainId(maintainer_id, date);
+	}
+
+	@Override
 	public List<MaintainerAllotment> findMaintainerAllotmentByMembId(String member_id) {
 		// TODO Auto-generated method stub
 		return maintainerAllotmentDao.findMaintainerAllotmentByMembId(member_id);

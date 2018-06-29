@@ -16,7 +16,7 @@ public class IndiaDateTime {
 
 	public static String getUTCdatetimeAsString() {
 		final SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
-		//sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		// sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
 		final String utcTime = sdf.format(new Date());
 
@@ -32,6 +32,13 @@ public class IndiaDateTime {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+
+		return dateToReturn;
+	}
+
+	public static String DateToStringDate(Date date) {
+		final SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
+		String dateToReturn = sdf.format(date);
 
 		return dateToReturn;
 	}
