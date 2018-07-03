@@ -29,10 +29,11 @@ public class FeedbackDaoImpl implements FeedbackDao {
 	}
 
 	@Override
-	public List<Feedback> searchFeedByMainMembIdDate(String maintainer_id, String member_id, String date) {
+	public List<Feedback> searchFeedByMainMembIdDate(String maintainer_id, String member_id, String dateFrom,
+			String dateTo) {
 		// TODO Auto-generated method stub
-		Date startDate = IndiaDateTime.stringDateToDate(date + " 00:00:00");
-		Date endDate = IndiaDateTime.stringDateToDate(date + " 23:59:59");
+		Date startDate = IndiaDateTime.stringDateToDate(dateFrom + " 00:00:00");
+		Date endDate = IndiaDateTime.stringDateToDate(dateTo + " 23:59:59");
 
 		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
 		CriteriaQuery<Feedback> criteriaQuery = criteriaBuilder.createQuery(Feedback.class);

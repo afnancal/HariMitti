@@ -22,9 +22,10 @@ public class FeedbackServiceImpl implements FeedbackService {
 	}
 
 	@Override
-	public List<Feedback> searchFeedByMainMembIdDate(String maintainer_id, String member_id, String date) {
+	public List<Feedback> searchFeedByMainMembIdDate(String maintainer_id, String member_id, String dateFrom,
+			String dateTo) {
 		// TODO Auto-generated method stub
-		return feedbackDao.searchFeedByMainMembIdDate(maintainer_id, member_id, date);
+		return feedbackDao.searchFeedByMainMembIdDate(maintainer_id, member_id, dateFrom, dateTo);
 	}
 
 	@Override

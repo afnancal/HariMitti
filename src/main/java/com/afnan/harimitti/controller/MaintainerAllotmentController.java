@@ -67,8 +67,7 @@ public class MaintainerAllotmentController {
 		return maintainerAllotments;
 	}
 
-	// -------------------Search Allotment by Membership
-	// Id------------------------------
+	// -------------------Search Allotment by Membership Id------------------------
 	@RequestMapping(value = "/searchMaintainerAllotmentMemb/{member_id}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody List<MaintainerAllotment> findMaintainerAllotmentByMembId(
 			@PathVariable("member_id") String member_id) {
