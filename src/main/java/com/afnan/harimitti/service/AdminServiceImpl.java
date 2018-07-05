@@ -34,6 +34,12 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	public List<Admin> findAdminByName(String name) {
+		// TODO Auto-generated method stub
+		return adminDao.findAdminByName(name);
+	}
+
+	@Override
 	public ReturnMsg createAdmin(Admin admin) {
 		// TODO Auto-generated method stub
 		return adminDao.createAdmin(admin);

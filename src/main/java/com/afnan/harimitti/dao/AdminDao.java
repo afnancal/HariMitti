@@ -11,6 +11,8 @@ public interface AdminDao {
 
 	public List<Admin> findAdminById(String admin_id);
 
+	public List<Admin> findAdminByName(String name);
+
 	// public Login loginAdmin(Admin admin);
 
 	public ReturnMsg createAdmin(Admin admin);

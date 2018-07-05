@@ -36,6 +36,14 @@ public class AdminController {
 		return admins;
 	}
 
+	// -------------------Find Admin by name------------------------------
+	@RequestMapping(value = "/searchAdminByName/{name}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<Admin> findAdminByName(@PathVariable("name") String name) {
+		List<Admin> admins = adminService.findAdminByName(name);
+
+		return admins;
+	}
+
 	// ------------Login a Admin, but login from Maintainer login url---------
 
 	// -------------------Create a Admin------------------------------------

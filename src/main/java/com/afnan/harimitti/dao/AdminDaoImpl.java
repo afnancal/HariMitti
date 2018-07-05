@@ -54,6 +54,22 @@ public class AdminDaoImpl implements AdminDao {
 	}
 
 	@Override
+	public List<Admin> findAdminByName(String name) {
+		// TODO Auto-generated method stub
+
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<Admin> criteriaQuery = criteriaBuilder.createQuery(Admin.class);
+		EntityType<Admin> type = getSession().getMetamodel().entity(Admin.class);
+		Root<Admin> root = criteriaQuery.from(Admin.class);
+
+		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(
+				criteriaBuilder.lower(root.get(type.getDeclaredSingularAttribute("name", String.class))),
+				"%" + name.toLowerCase() + "%")));
+
+		return getSession().createQuery(criteriaQuery).getResultList();
+	}
+
+	@Override
 	public ReturnMsg createAdmin(Admin admin) {
 		// TODO Auto-generated method stub
 		ReturnMsg returnMsg = new ReturnMsg();

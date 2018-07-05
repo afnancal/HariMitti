@@ -30,7 +30,7 @@ public class MemberController {
 	}
 
 	// -------------------Find Member by name------------------------------
-	@RequestMapping(value = "/searchMember/{name}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/searchMemberByName/{name}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody List<Member> search(@PathVariable("name") String name) {
 		List<Member> members = memberService.findMemberByName(name);
 

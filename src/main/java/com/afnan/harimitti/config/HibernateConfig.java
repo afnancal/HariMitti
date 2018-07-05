@@ -33,11 +33,11 @@ public class HibernateConfig {
 	public DataSource dataSource() {
 		DriverManagerDataSource ds = new DriverManagerDataSource();
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
-		//ds.setUrl("jdbc:mysql://localhost:3306/lllc");
+		// ds.setUrl("jdbc:mysql://localhost:3306/lllc");
 		ds.setUrl("jdbc:mysql://jws-app-mysql:3306/lllc");
-		//ds.setUsername("root");
+		// ds.setUsername("root");
 		ds.setUsername("user");
-		//ds.setPassword("");
+		// ds.setPassword("");
 		ds.setPassword("password");
 
 		return ds;

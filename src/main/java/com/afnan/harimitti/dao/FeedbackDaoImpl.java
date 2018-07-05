@@ -43,6 +43,8 @@ public class FeedbackDaoImpl implements FeedbackDao {
 				criteriaBuilder.or(criteriaBuilder.like(root.get("membership_id"), member_id)),
 				criteriaBuilder.or(criteriaBuilder.greaterThanOrEqualTo(root.get("action_on"), startDate)),
 				criteriaBuilder.or(criteriaBuilder.lessThanOrEqualTo(root.get("action_on"), endDate)));
+		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("action_on")));
+		
 		List<Feedback> feedbacks = getSession().createQuery(criteriaQuery).getResultList();
 
 		return feedbacks;
@@ -56,6 +58,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
 		Root<Feedback> root = criteriaQuery.from(Feedback.class);
 
 		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)));
+		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("action_on")));
 		List<Feedback> feedbacks = getSession().createQuery(criteriaQuery).getResultList();
 
 		return feedbacks;
@@ -69,6 +72,7 @@ public class FeedbackDaoImpl implements FeedbackDao {
 		Root<Feedback> root = criteriaQuery.from(Feedback.class);
 
 		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("membership_id"), member_id)));
+		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("action_on")));
 		List<Feedback> feedbacks = getSession().createQuery(criteriaQuery).getResultList();
 
 		return feedbacks;

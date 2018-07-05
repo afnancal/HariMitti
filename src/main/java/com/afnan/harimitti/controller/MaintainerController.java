@@ -30,7 +30,7 @@ public class MaintainerController {
 	}
 
 	// -------------------Find Maintainer by name------------------------------
-	@RequestMapping(value = "/searchMaintainer/{name}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@RequestMapping(value = "/searchMaintainerByName/{name}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public @ResponseBody List<Maintainer> search(@PathVariable("name") String name) {
 		List<Maintainer> maintainers = maintainerService.findMaintainerByName(name);
 

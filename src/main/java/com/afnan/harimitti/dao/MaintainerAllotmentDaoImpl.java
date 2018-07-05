@@ -46,6 +46,8 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 		Root<MaintainerAllotment> root = criteriaQuery.from(MaintainerAllotment.class);
 
 		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)));
+		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("schedule")));
+		
 		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).getResultList();
 
 		return maintainerAllotments;
