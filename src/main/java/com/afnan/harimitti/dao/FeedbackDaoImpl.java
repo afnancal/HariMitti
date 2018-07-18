@@ -1,11 +1,17 @@
 package com.afnan.harimitti.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -32,6 +38,29 @@ public class FeedbackDaoImpl implements FeedbackDao {
 	public List<Feedback> searchFeedByMainMembIdDate(String maintainer_id, String member_id, String dateFrom,
 			String dateTo) {
 		// TODO Auto-generated method stub
+		if (dateFrom.equals("blank")) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+			String StrDate = sdf.format(new Date());
+			Date dt = null;
+			try {
+				dt = (Date) sdf.parse(StrDate);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Calendar c = Calendar.getInstance();
+			c.setTime(dt);
+			c.add(Calendar.DATE, -2);
+			dt = c.getTime();
+			dateFrom = sdf.format(dt);
+
+		}
+		if (dateTo.equals("blank")) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+			dateTo = sdf.format(new Date());
+		}
 		Date startDate = IndiaDateTime.stringDateToDate(dateFrom + " 00:00:00");
 		Date endDate = IndiaDateTime.stringDateToDate(dateTo + " 23:59:59");
 
@@ -39,12 +68,28 @@ public class FeedbackDaoImpl implements FeedbackDao {
 		CriteriaQuery<Feedback> criteriaQuery = criteriaBuilder.createQuery(Feedback.class);
 		Root<Feedback> root = criteriaQuery.from(Feedback.class);
 
-		criteriaQuery.where(criteriaBuilder.or(criteriaBuilder.like(root.get("maintainer_id"), maintainer_id)),
-				criteriaBuilder.or(criteriaBuilder.like(root.get("membership_id"), member_id)),
-				criteriaBuilder.or(criteriaBuilder.greaterThanOrEqualTo(root.get("action_on"), startDate)),
-				criteriaBuilder.or(criteriaBuilder.lessThanOrEqualTo(root.get("action_on"), endDate)));
+		// This list will contain all Predicates (where clauses)
+		List<Predicate> predicates = new ArrayList<Predicate>();
+
+		if (!maintainer_id.equals("blank")) {
+			Predicate predicate1 = criteriaBuilder.like(root.get("maintainer_id"), maintainer_id);
+			predicates.add(predicate1);
+		}
+
+		if (!member_id.equals("blank")) {
+			Predicate predicate2 = criteriaBuilder.like(root.get("membership_id"), member_id);
+			predicates.add(predicate2);
+		}
+
+		Predicate predicate3 = criteriaBuilder.greaterThanOrEqualTo(root.get("action_on"), startDate);
+		predicates.add(predicate3);
+
+		Predicate predicate4 = criteriaBuilder.lessThanOrEqualTo(root.get("action_on"), endDate);
+		predicates.add(predicate4);
+
+		// Pass the criteria list to the where method of criteria query
+		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("action_on")));
-		
 		List<Feedback> feedbacks = getSession().createQuery(criteriaQuery).getResultList();
 
 		return feedbacks;

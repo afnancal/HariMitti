@@ -1,5 +1,11 @@
 package com.afnan.harimitti.dao;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
@@ -10,15 +16,24 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.afnan.harimitti.helper.IndiaDateTime;
+import com.afnan.harimitti.model.Maintainer;
 import com.afnan.harimitti.model.MaintainerAllotment;
 import com.afnan.harimitti.model.ReturnMsg;
 
 @Repository
 public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
+
+	public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
+	public final static String applicationID = "AIzaSyA5Iv7lDUZUtHNKiqZBGM4ykockZoUxjDI";
+	private final static String senderId = "harimitti-operator";
+	private static String title = "Maintainer Allotted";
+	private static String message = "Created Allotment successfully.";
+	private static String imageUrl = "";
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -47,7 +62,7 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 
 		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)));
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("schedule")));
-		
+
 		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).getResultList();
 
 		return maintainerAllotments;
@@ -76,9 +91,9 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 	@Override
 	public List<MaintainerAllotment> findPreviousMainAllotByMainId(String maintainer_id, String date) {
 		// TODO Auto-generated method stub
-		Date d = IndiaDateTime.stringDateToDate(date + " 00:00:00"); 		// Initialize your date to any date
+		Date d = IndiaDateTime.stringDateToDate(date + " 00:00:00"); // Initialize your date to any date
 		int n = 7;
-		Date dateBefore = new Date(d.getTime() - n * 24 * 3600 * 1000); 	// Subtract n days
+		Date dateBefore = new Date(d.getTime() - n * 24 * 3600 * 1000); // Subtract n days
 		String startDate = IndiaDateTime.DateToStringDate(dateBefore);
 		String endDate = date + " 00:00:00";
 
@@ -91,7 +106,7 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 				criteriaBuilder.or(criteriaBuilder.lessThanOrEqualTo(root.get("schedule"), endDate)));
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("schedule")));
 
-		int limit = 10; 	// Set limit gives only 10 data
+		int limit = 10; // Set limit gives only 10 data
 		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).setMaxResults(limit)
 				.getResultList();
 
@@ -116,7 +131,7 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 				criteriaBuilder.or(criteriaBuilder.lessThanOrEqualTo(root.get("schedule"), endDate)));
 		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("schedule")));
 
-		int limit = 10; 	// Set limit gives only 10 data
+		int limit = 10; // Set limit gives only 10 data
 		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).setMaxResults(limit)
 				.getResultList();
 
@@ -141,6 +156,16 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 		// TODO Auto-generated method stub
 		ReturnMsg returnMsg = new ReturnMsg();
 
+		// For getting Maintainer Allotment gcm_reg
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
+		CriteriaQuery<String> criteriaQuery = criteriaBuilder.createQuery(String.class);
+		Root<Maintainer> root = criteriaQuery.from(Maintainer.class);
+
+		criteriaQuery.multiselect(root.get("gcm_reg"));
+		criteriaQuery.where(criteriaBuilder
+				.or(criteriaBuilder.like(root.get("maintainer_id"), maintainerAllotment.getMaintainer_id())));
+		String gcm_reg = getSession().createQuery(criteriaQuery).getSingleResult();
+
 		MaintainerAllotment maintainerAllotmentObj = new MaintainerAllotment();
 		maintainerAllotmentObj.setMaintainer_id(maintainerAllotment.getMaintainer_id());
 		maintainerAllotmentObj.setMembership_id(maintainerAllotment.getMembership_id());
@@ -153,6 +178,7 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 			if (count != 0) {
 				returnMsg.setStatus(true);
 				returnMsg.setMsg("Successfully allotted.");
+				sendPushNotification(gcm_reg);
 
 			} else {
 				returnMsg.setStatus(false);
@@ -225,6 +251,60 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 		}
 
 		return returnMsg;
+	}
+
+	// HTTP Post request
+	@SuppressWarnings("unchecked")
+	public static String sendPushNotification(String deviceToken) throws IOException {
+
+		String result = "";
+		URL url = new URL(API_URL_FCM);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+		conn.setUseCaches(false);
+		conn.setDoInput(true);
+		conn.setDoOutput(true);
+
+		conn.setRequestMethod("POST");
+		conn.setRequestProperty("Authorization", "key=" + applicationID);
+		conn.setRequestProperty("Sender", "id=" + senderId);
+		conn.setRequestProperty("Content-Type", "application/json");
+
+		JSONObject json = new JSONObject();
+
+		JSONObject info = new JSONObject();
+		info.put("\"timestamp\"", "\"" + IndiaDateTime.getUTCdatetimeAsString() + "\"");
+		info.put("\"title\"", "\"" + title + "\""); // Notification title
+		info.put("\"message\"", "\"" + message + "\""); // Notification
+		info.put("\"image\"", "\"" + imageUrl + "\"");
+		// body
+		json.put("data", info);
+		json.put("to", deviceToken.trim());
+		/*
+		 * json.put("priority", "high"); json.put("sound", "enabled");
+		 */
+		System.out.println(json.toJSONString());
+		try {
+			OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+			wr.write(json.toString());
+			wr.flush();
+
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+			String output;
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println(output);
+			}
+			result = "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = "BAD";
+		}
+		System.out.println("GCM Notification is sent successfully");
+
+		return result;
+
 	}
 
 }

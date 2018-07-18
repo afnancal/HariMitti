@@ -33,9 +33,11 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public List<Member> getListMember() {
 		// TODO Auto-generated method stub
+		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
 		// create Criteria
-		CriteriaQuery<Member> criteriaQuery = getSession().getCriteriaBuilder().createQuery(Member.class);
-		criteriaQuery.from(Member.class);
+		CriteriaQuery<Member> criteriaQuery = criteriaBuilder.createQuery(Member.class);
+		Root<Member> root = criteriaQuery.from(Member.class);
+		criteriaQuery.orderBy(getSession().getCriteriaBuilder().asc(root.get("membership_id")));
 
 		return getSession().createQuery(criteriaQuery).getResultList();
 	}
