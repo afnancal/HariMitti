@@ -220,13 +220,15 @@ public class MysqlExportService {
 		return sql.toString();
 	}
 
-	public void export() throws IOException, SQLException, ClassNotFoundException {
+	public String export() throws IOException, SQLException, ClassNotFoundException {
+
+		String result = "";
 
 		// check if properties is set or not
 		if (!validateProperties()) {
-			logger.error(
-					"Invalid config properties: The config properties is missing important parameters: DB_NAME, DB_USERNAME and DB_PASSWORD");
-			return;
+			result = "Invalid config properties: The config properties is missing important parameters: DB_NAME, DB_USERNAME and DB_PASSWORD";
+			logger.error(result);
+			return result;
 		}
 
 		// connect to the database
@@ -241,7 +243,8 @@ public class MysqlExportService {
 					properties.getProperty(DB_PASSWORD), database, driverName);
 		} else {
 			database = jdbcURL.substring(jdbcURL.lastIndexOf("/") + 1);
-			logger.debug("database name extracted from connection string: " + database);
+			result = "database name extracted from connection string: " + database;
+			logger.debug(result);
 			connection = MysqlBaseService.connectWithURL(properties.getProperty(DB_USERNAME),
 					properties.getProperty(DB_PASSWORD), jdbcURL, driverName);
 		}
@@ -290,15 +293,20 @@ public class MysqlExportService {
 					.setAttachments(new File[] { new File(zipFileName) }).sendMail();
 
 			if (emailSendingRes) {
-				logger.debug(LOG_PREFIX + ": Zip File Sent as Attachment to Email Address Successfully");
+				result = LOG_PREFIX + ": Zip File Sent as Attachment to Email Address Successfully.";
+				logger.debug(result);
+
 			} else {
-				logger.error(LOG_PREFIX
-						+ ": Unable to send zipped file as attachment to email. See log debug for more info");
+				result = LOG_PREFIX
+						+ ": Unable to send zipped file as attachment to email. See log debug for more info";
+				logger.error(result);
 			}
 		}
 
 		// clear the generated temp files
 		clearTempFiles(Boolean.parseBoolean(properties.getProperty(PRESERVE_GENERATED_ZIP, Boolean.FALSE.toString())));
+		
+		return result;
 
 	}
 
