@@ -40,6 +40,12 @@ public class MaintainerLocationServiceImpl implements MaintainerLocationService 
 	}
 
 	@Override
+	public ReturnMsg updateMaintainerLocation(String date, MaintainerLocation maintainerLocation) {
+		// TODO Auto-generated method stub
+		return maintainerLocationDao.updateMaintainerLocation(date, maintainerLocation);
+	}
+
+	@Override
 	public ReturnMsg deleteMaintainerLocation(String maintainer_id) {
 		// TODO Auto-generated method stub
 		return maintainerLocationDao.deleteMaintainerLocation(maintainer_id);

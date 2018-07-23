@@ -22,6 +22,12 @@ public class MaintainerLocation {
 	@Column(name = "maintainer_id", nullable = false)
 	private String maintainer_id;
 
+	@Column(name = "membership_id", nullable = false)
+	private String membership_id;
+
+	@Column(name = "image_number", nullable = false)
+	private int image_number;
+
 	@Column(name = "latitude", nullable = false)
 	private Double latitude;
 
@@ -45,6 +51,22 @@ public class MaintainerLocation {
 
 	public void setMaintainer_id(String maintainer_id) {
 		this.maintainer_id = maintainer_id;
+	}
+
+	public String getMembership_id() {
+		return membership_id;
+	}
+
+	public void setMembership_id(String membership_id) {
+		this.membership_id = membership_id;
+	}
+
+	public int getImage_number() {
+		return image_number;
+	}
+
+	public void setImage_number(int image_number) {
+		this.image_number = image_number;
 	}
 
 	public Double getLatitude() {

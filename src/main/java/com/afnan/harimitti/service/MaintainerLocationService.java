@@ -12,7 +12,9 @@ public interface MaintainerLocationService {
 	public ReturnMsg createMaintainerLocation(MaintainerLocation maintainerLocation);
 
 	public ReturnMsg maintainerLocationExist(String maintainer_id);
-	
+
+	public ReturnMsg updateMaintainerLocation(String date, MaintainerLocation maintainerLocation);
+
 	public ReturnMsg deleteMaintainerLocation(String maintainer_id);
 
 }

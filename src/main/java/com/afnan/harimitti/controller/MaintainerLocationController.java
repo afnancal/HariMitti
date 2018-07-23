@@ -43,6 +43,13 @@ public class MaintainerLocationController {
 		return maintainerLocationService.maintainerLocationExist(maintainer_id);
 	}
 
+	// ------------------- Update a MaintainerLocation -----------------------
+	@RequestMapping(value = "/updateMaintainerLocation/{date}", method = RequestMethod.PUT)
+	public @ResponseBody ReturnMsg updateMaintainerLocation(@PathVariable("date") String date, @RequestBody MaintainerLocation maintainerLocation) {
+
+		return maintainerLocationService.updateMaintainerLocation(date, maintainerLocation);
+	}
+
 	// ------------------- Delete a MaintainerLocation --------------------------
 	@RequestMapping(value = "/deleteMaintainerLocation/{maintainer_id}", method = RequestMethod.DELETE)
 	public @ResponseBody ReturnMsg deleteMaintainerLocation(@PathVariable("maintainer_id") String maintainer_id) {
