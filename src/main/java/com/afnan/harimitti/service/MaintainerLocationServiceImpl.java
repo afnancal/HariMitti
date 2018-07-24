@@ -22,9 +22,10 @@ public class MaintainerLocationServiceImpl implements MaintainerLocationService 
 	}
 
 	@Override
-	public List<MaintainerLocation> findMaintainerLocationById(String maintainer_id) {
+	public List<MaintainerLocation> findMaintainerLocationById(String maintainer_id, String membership_id,
+			String date) {
 		// TODO Auto-generated method stub
-		return maintainerLocationDao.findMaintainerLocationById(maintainer_id);
+		return maintainerLocationDao.findMaintainerLocationById(maintainer_id, membership_id, date);
 	}
 
 	@Override

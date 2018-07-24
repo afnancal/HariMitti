@@ -7,7 +7,7 @@ import com.afnan.harimitti.model.ReturnMsg;
 
 public interface MaintainerLocationService {
 
-	public List<MaintainerLocation> findMaintainerLocationById(String maintainer_id);
+	public List<MaintainerLocation> findMaintainerLocationById(String maintainer_id, String membership_id, String date);
 
 	public ReturnMsg createMaintainerLocation(MaintainerLocation maintainerLocation);
 

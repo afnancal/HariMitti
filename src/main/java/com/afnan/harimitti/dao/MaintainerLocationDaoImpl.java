@@ -28,13 +28,20 @@ public class MaintainerLocationDaoImpl implements MaintainerLocationDao {
 	}
 
 	@Override
-	public List<MaintainerLocation> findMaintainerLocationById(String maintainer_id) {
+	public List<MaintainerLocation> findMaintainerLocationById(String maintainer_id, String membership_id,
+			String date) {
 		// TODO Auto-generated method stub
+		Date startDate = IndiaDateTime.stringDateToDate(date + " 00:00:00");
+		Date endDate = IndiaDateTime.stringDateToDate(date + " 23:59:59");
+
 		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
 		CriteriaQuery<MaintainerLocation> criteriaQuery = criteriaBuilder.createQuery(MaintainerLocation.class);
 		Root<MaintainerLocation> root = criteriaQuery.from(MaintainerLocation.class);
 
-		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)));
+		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)),
+				criteriaBuilder.and(criteriaBuilder.equal(root.get("membership_id"), membership_id)),
+				criteriaBuilder.and(criteriaBuilder.between(root.get("action_on"), startDate, endDate)));
+		criteriaQuery.orderBy(criteriaBuilder.asc(root.get("action_on")));
 		List<MaintainerLocation> maintainerLocation = getSession().createQuery(criteriaQuery).getResultList();
 
 		return maintainerLocation;

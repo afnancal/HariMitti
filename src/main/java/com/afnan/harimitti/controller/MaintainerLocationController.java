@@ -21,10 +21,11 @@ public class MaintainerLocationController {
 	MaintainerLocationService maintainerLocationService;
 
 	// -------------------Search by Maintainer Id------------------------------
-	@RequestMapping(value = "/searchMaintainerLocation/{maintainer_id}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public @ResponseBody List<MaintainerLocation> search(@PathVariable("maintainer_id") String maintainer_id) {
+	@RequestMapping(value = "/searchMaintainerLocation/{maintainer_id}/{membership_id}/{date}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<MaintainerLocation> search(@PathVariable("maintainer_id") String maintainer_id,
+			@PathVariable("membership_id") String membership_id, @PathVariable("date") String date) {
 		List<MaintainerLocation> maintainerLocations = maintainerLocationService
-				.findMaintainerLocationById(maintainer_id);
+				.findMaintainerLocationById(maintainer_id, membership_id, date);
 
 		return maintainerLocations;
 	}
@@ -45,7 +46,8 @@ public class MaintainerLocationController {
 
 	// ------------------- Update a MaintainerLocation -----------------------
 	@RequestMapping(value = "/updateMaintainerLocation/{date}", method = RequestMethod.PUT)
-	public @ResponseBody ReturnMsg updateMaintainerLocation(@PathVariable("date") String date, @RequestBody MaintainerLocation maintainerLocation) {
+	public @ResponseBody ReturnMsg updateMaintainerLocation(@PathVariable("date") String date,
+			@RequestBody MaintainerLocation maintainerLocation) {
 
 		return maintainerLocationService.updateMaintainerLocation(date, maintainerLocation);
 	}
