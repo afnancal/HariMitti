@@ -6,12 +6,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -54,13 +56,31 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 	}
 
 	@Override
-	public List<MaintainerAllotment> findMaintainerAllotmentByMainId(String maintainer_id) {
+	public List<MaintainerAllotment> findMaintainerAllotmentByMainId(String maintainer_id, String dateFrom,
+			String dateTo) {
 		// TODO Auto-generated method stub
+		String startDate = dateFrom + " 00:00:00";
+		String endDate = dateTo + " 23:59:59";
+
 		CriteriaBuilder criteriaBuilder = getSession().getCriteriaBuilder();
 		CriteriaQuery<MaintainerAllotment> criteriaQuery = criteriaBuilder.createQuery(MaintainerAllotment.class);
 		Root<MaintainerAllotment> root = criteriaQuery.from(MaintainerAllotment.class);
 
-		criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)));
+		// This list will contain all Predicates (where clauses)
+		List<Predicate> predicates = new ArrayList<Predicate>();
+
+		Predicate predicate1 = criteriaBuilder.like(root.get("maintainer_id"), maintainer_id);
+		predicates.add(predicate1);
+
+		Predicate predicate2 = criteriaBuilder.greaterThanOrEqualTo(root.get("schedule"), startDate);
+		predicates.add(predicate2);
+
+		Predicate predicate3 = criteriaBuilder.lessThanOrEqualTo(root.get("schedule"), endDate);
+		predicates.add(predicate3);
+
+		// Pass the criteria list to the where method of criteria query
+		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()])));
+		//criteriaQuery.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("maintainer_id"), maintainer_id)));
 		criteriaQuery.orderBy(criteriaBuilder.desc(root.get("schedule")));
 
 		List<MaintainerAllotment> maintainerAllotments = getSession().createQuery(criteriaQuery).getResultList();
@@ -277,6 +297,8 @@ public class MaintainerAllotmentDaoImpl implements MaintainerAllotmentDao {
 		info.put("\"title\"", "\"" + title + "\""); // Notification title
 		info.put("\"message\"", "\"" + message + "\""); // Notification
 		info.put("\"image\"", "\"" + imageUrl + "\"");
+		JSONObject jsonPayload = new JSONObject();
+		info.put("\"payload\"", jsonPayload);
 		// body
 		json.put("data", info);
 		json.put("to", deviceToken.trim());

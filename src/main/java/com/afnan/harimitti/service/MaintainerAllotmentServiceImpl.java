@@ -28,9 +28,10 @@ public class MaintainerAllotmentServiceImpl implements MaintainerAllotmentServic
 	}
 
 	@Override
-	public List<MaintainerAllotment> findMaintainerAllotmentByMainId(String maintainer_id) {
+	public List<MaintainerAllotment> findMaintainerAllotmentByMainId(String maintainer_id, String dateFrom,
+			String dateTo) {
 		// TODO Auto-generated method stub
-		return maintainerAllotmentDao.findMaintainerAllotmentByMainId(maintainer_id);
+		return maintainerAllotmentDao.findMaintainerAllotmentByMainId(maintainer_id, dateFrom, dateTo);
 	}
 
 	@Override

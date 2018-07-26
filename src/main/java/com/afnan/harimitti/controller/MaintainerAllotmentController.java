@@ -29,10 +29,11 @@ public class MaintainerAllotmentController {
 	}
 
 	// -------------------Search Allotment by Maintainer Id-------------------
-	@RequestMapping(value = "/searchMaintainerAllotmentMain/{maintainer_id}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public @ResponseBody List<MaintainerAllotment> search(@PathVariable("maintainer_id") String maintainer_id) {
+	@RequestMapping(value = "/searchMaintainerAllotmentMain/{maintainer_id}/{dateFrom}/{dateTo}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public @ResponseBody List<MaintainerAllotment> search(@PathVariable("maintainer_id") String maintainer_id,
+			@PathVariable("dateFrom") String dateFrom, @PathVariable("dateTo") String dateTo) {
 		List<MaintainerAllotment> maintainerAllotments = maintainerAllotmentService
-				.findMaintainerAllotmentByMainId(maintainer_id);
+				.findMaintainerAllotmentByMainId(maintainer_id, dateFrom, dateTo);
 
 		return maintainerAllotments;
 	}

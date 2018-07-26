@@ -9,7 +9,8 @@ public interface MaintainerAllotmentDao {
 
 	public List<MaintainerAllotment> getListMaintainerAllotment();
 
-	public List<MaintainerAllotment> findMaintainerAllotmentByMainId(String maintainer_id);
+	public List<MaintainerAllotment> findMaintainerAllotmentByMainId(String maintainer_id, String dateFrom,
+			String dateTo);
 
 	public List<MaintainerAllotment> findTodaysMainAllotByMainId(String maintainer_id, String date);
 
