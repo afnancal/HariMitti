@@ -8,6 +8,6 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String welcome() {
-		return "Hi, HariMitti API is up and running...!";
+		return "Hi, HariMitti API is up and running...!\nCreated by Mohammad Afnan Haseeb on 13-Feb-2018.";
 	}
 }
