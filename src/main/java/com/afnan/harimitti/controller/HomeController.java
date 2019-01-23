@@ -19,6 +19,7 @@ public class HomeController {
 		status.setStatus("Hi,      HariMitti API is up and running...!");
 		status.setAuthor("Mohammad Afnan Haseeb");
 		status.setDate("13-Feb-2018");
+		//return "Hi,<Br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HariMitti API is up and running...!<Br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Created by Mohammad Afnan Haseeb on 13-Feb-2018.";
 		return status;
 	}
 	
